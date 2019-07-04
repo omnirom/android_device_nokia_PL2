@@ -16,10 +16,13 @@
 
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 
-# Inherit some common AEX stuff.
-$(call inherit-product, vendor/aosp/common.mk)
+# Get the prebuilt list of APNs
+$(call inherit-product, vendor/omni/config/gsm.mk)
+
+# Inherit from our custom product configuration
+$(call inherit-product, vendor/omni/config/common.mk)
 
 # Inherit from nokia sdm660-common
 $(call inherit-product, device/nokia/sdm660-common/sdm660.mk)
@@ -36,9 +39,9 @@ TARGET_SCREEN_HEIGHT := 1920
 TARGET_SCREEN_WIDTH := 1080
 
 # Include Bootanimation configuration
-TARGET_BOOT_ANIMATION_RES :=1080
+TARGET_BOOTANIMATION_SIZE :=1080p
 
-PRODUCT_NAME := aosp_PL2
+PRODUCT_NAME := omni_PL2
 PRODUCT_DEVICE := PL2
 PRODUCT_MANUFACTURER := FIH
 PRODUCT_BRAND := Nokia
@@ -55,11 +58,3 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
     PRIVATE_BUILD_DESC="Plate2_00WW-user 9 PPR1.180610.011 00WW_3_53B release-keys"
 
 BUILD_FINGERPRINT := Nokia/Plate2_00WW/PL2_sprout:9/PPR1.180610.011/00WW_3_53B:user/release-keys
-
-# GAPPS
-ifeq ($(CURRENT_BUILD_TYPE), gapps)
-WITH_GAPPS := true
-TARGET_GAPPS_ARCH := arm64
-IS_PHONE := true
-TARGET_SHIPS_SEPERATE_GAPPS_BUILD := true
-endif
